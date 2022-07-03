@@ -26,14 +26,6 @@ public class AccountController {
         SpringApplication.run(AccountController.class, args);
     }
 
-    @GetMapping("/delete/{email}/{password}")
-    public String createAccount(@PathVariable("email") String email,
-                                @PathVariable("password") String password) {
-        System.out.println("Email: " + email);
-        System.out.println("password: " + password);
-        return email + " - " +  password;
-    }
-
     // Khi gọi vào link thì user phải truyền 2 tham số (dạng key-value)
     @GetMapping("/create")
     public String createAccountTwo(@RequestParam("email") String email,
@@ -45,9 +37,26 @@ public class AccountController {
 
     // @RequestBody nhận tham số là Json/Text, dùng raw vì dữ liệu ghi trực tiếp và Request
     // Json sẽ được chuyển về một Object nếu đã được quy định kiểu Object tương ứng trong hàm
-    @PostMapping("/update")
+    @PostMapping(value = "/update")
     public String updateAccount(@RequestBody Account data) {
         System.out.println("Data: " + data.toString());
         return data.getPassword();
     }
+
+    // Dấu tham số
+    @DeleteMapping(value = "/delete/{email}/{password}")
+    public String createAccount(@PathVariable("email") String email,
+                                @PathVariable("password") String password) {
+        System.out.println("Email: " + email);
+        System.out.println("password: " + password);
+        return email + " - " +  password;
+    }
+
+    // Quy định dữ liệu truyền vào buộc có content-type là application/x-www-form-urlencoded
+    @PostMapping(value = "/update", consumes = "application/x-www-form-urlencoded")
+    public String updateAccountV2(@RequestBody Account data) {
+        System.out.println("Data: " + data.toString());
+        return data.getPassword();
+    }
 }
+
